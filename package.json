@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test jest  --testTimeout=10000",
+    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "build": "babel src -d dist",
     "dev": "nodemon --exec babel-node src/index.js"
   },
@@ -31,12 +32,14 @@
     "@babel/node": "^7.8.7",
     "@babel/preset-env": "^7.8.7",
     "@babel/register": "^7.8.6",
+    "coveralls": "^3.0.11",
     "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.20.1",
     "jest": "^25.1.0",
+    "nyc": "^15.0.0",
     "regenerator-runtime": "^0.13.5",
     "supertest": "^4.0.2"
   },

@@ -10,3 +10,6 @@ install:
 env:
   global:
   - NODE_ENV=test
+
+after_success:
+  - npm run coverage
