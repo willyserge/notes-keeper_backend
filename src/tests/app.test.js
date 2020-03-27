@@ -51,8 +51,9 @@ describe('POST /api/auth/signup', () => {
       email: 'invalidemail',
       password: 'test'
     };
-    await request.post('/api/auth/signup')
+    const res = await request.post('/api/auth/signup')
       .send(newUser).expect(400);
+    expect(res.body.error.message).toBeTruthy();
     done();
   });
 });
