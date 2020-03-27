@@ -40,6 +40,27 @@ describe('POST /api/auth/signup', () => {
     expect(user).not.toBeNull();
     expect(user.email).toBeTruthy();
     expect(user.password).not.toBe('testPass123');
+    expect(res.body.token).toBeTruthy();
+    done();
+  });
+
+  it('should not register a user with invalid data', async (done) => {
+    const newUser = {
+      firstname: 'willy',
+      lastname: 'test',
+      email: 'invalidemail',
+      password: 'test'
+    };
+    await request.post('/api/auth/signup')
+      .send(newUser).expect(400);
+    done();
+  });
+});
+
+describe('NON-EXISTING ENDPOINT', () => {
+  it('should return 404 not found error', async (done) => {
+    const res = await request.get('/notExist').expect(404);
+    expect(res.body.error.message).toBe('Not Found');
     done();
   });
 });
