@@ -7,9 +7,9 @@ cache:
 install:
   - npm install
 
+services:
+  - mongodb
+
 env:
   global:
   - NODE_ENV=test
-
-after_success:
-  - npm run coverage
