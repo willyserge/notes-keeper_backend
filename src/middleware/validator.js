@@ -1,4 +1,5 @@
 import Joi from '@hapi/joi';
+import createError from 'http-errors';
 
 const Validate = {
   signup: (req, res, next) => {
@@ -11,10 +12,7 @@ const Validate = {
     });
     const result = schema.validate(req.body);
     if (result.error) {
-      return res.status(400).send({
-        status: 400,
-        error: `${result.error.details[0].message}`
-      });
+      throw createError(400, result.error.details[0].message);
     }
 
     return next();
