@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest --coverage && coveralls < coverage/lcov.info",
+    "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
     "build": "babel src -d dist",
     "dev": "nodemon --exec babel-node src/index.js"
   },
@@ -45,6 +45,7 @@
     "@hapi/joi": "^17.1.1",
     "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
+    "http-errors": "^1.7.3",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "mongoose": "^5.9.6"
