@@ -32,7 +32,7 @@ const Auth = {
   async signin(req, res, next) {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    if (!user) return res.status(401).json({ error: { message: 'invalid email orpassword' } });
+    if (!user) return res.status(401).json({ error: { message: 'invalid email or password' } });
     const isValid = await user.isPasswordValid(password);
     if (!isValid) return res.status(401).json({ error: { message: 'invalid email or password' } });
     const token = generateToken(user);
