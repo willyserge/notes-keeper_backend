@@ -1,17 +1,18 @@
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-await-in-loop */
-import mongoose from 'mongoose';
+import User from '../../models/user';
 
-
-const Db = {
-  removeAllCollections: async () => {
-    const collections = Object.keys(mongoose.connection.collections);
-    for (const collectionName of collections) {
-      const collection = mongoose.connection.collections[collectionName];
-      await collection.deleteMany();
-    }
-  }
-
+const userOne = {
+  firstname: 'willy',
+  lastname: 'serge',
+  email: 'willy@test.com',
+  password: 'test123'
 };
 
-export default Db;
+const setupDatabase = async () => {
+  await User.deleteMany();
+  await new User(userOne).save();
+};
+
+export {
+  userOne,
+  setupDatabase
+};
