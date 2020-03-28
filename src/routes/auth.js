@@ -5,5 +5,6 @@ import Validate from '../middleware/validator';
 
 const authRouter = express.Router();
 authRouter.post('/signup', Validate.signup, Auth.signup);
+authRouter.post('/signin', Auth.signin);
 
 export default authRouter;

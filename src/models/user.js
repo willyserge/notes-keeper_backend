@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import bcrypt from 'bcryptjs';
+import createError from 'http-errors';
 
 dotenv.config();
 
@@ -42,6 +43,14 @@ userSchema.pre('save', async function () {
   const user = this;
   user.password = await bcrypt.hash(user.password, 8);
 });
+
+userSchema.methods.isPasswordValid = async function (value) {
+  try {
+      return await bcrypt.compare(value, this.password);
+  } catch (error) {
+      throw new Error(error);
+  }
+};
 
 const User = mongoose.model('User', userSchema);
 export default User;
