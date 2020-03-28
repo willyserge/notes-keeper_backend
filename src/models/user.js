@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import bcrypt from 'bcryptjs';
-import createError from 'http-errors';
 
 dotenv.config();
 
@@ -44,11 +43,12 @@ userSchema.pre('save', async function () {
   user.password = await bcrypt.hash(user.password, 8);
 });
 
+// eslint-disable-next-line func-names
 userSchema.methods.isPasswordValid = async function (value) {
   try {
-      return await bcrypt.compare(value, this.password);
+    return await bcrypt.compare(value, this.password);
   } catch (error) {
-      throw new Error(error);
+    throw new Error(error);
   }
 };
 
