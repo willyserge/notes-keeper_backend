@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import app from '../app';
 import User from '../models/user';
 import Note from '../models/note';
-import { userOne, setupDatabase } from './dbOperations';
+import { user, setupDatabase, noteId } from './dbOperations';
 
 const request = supertest(app);
 
@@ -34,10 +34,10 @@ describe('POST /api/auth/signup', () => {
     };
     const res = await request.post('/api/auth/signup')
       .send(newUser).expect(201);
-    const user = await User.findById(res.body.user._id);
-    expect(user).not.toBeNull();
-    expect(user.email).toBeTruthy();
-    expect(user.password).not.toBe('testPass123');
+    const testUser = await User.findById(res.body.user._id);
+    expect(testUser).not.toBeNull();
+    expect(testUser.email).toBeTruthy();
+    expect(testUser.password).not.toBe('testPass123');
     expect(res.body.token).toBeTruthy();
     done();
   });
@@ -59,20 +59,20 @@ describe('POST /api/auth/signup', () => {
 describe('POST /api/auth/signin', () => {
   it('should login existing user', async (done) => {
     const res = await request.post('/api/auth/signin').send({
-      email: userOne.email,
-      password: userOne.password
+      email: user.email,
+      password: user.password
     }).expect(200);
     expect(res.body.token).toBeTruthy();
     done();
   });
 
   it('should not signin a user with invalid data', async (done) => {
-    const user = {
+    const testUser = {
       email: 'invalidemail',
       password: 'test'
     };
     const res = await request.post('/api/auth/signin')
-      .send(user).expect(400);
+      .send(testUser).expect(400);
     expect(res.body.error.message).toBeTruthy();
     done();
   });
@@ -98,8 +98,8 @@ describe('POST /api/note', () => {
     const res = await request.post('/api/note')
       .send(newNote).set('Authorization', `Bearer ${process.env.TEST_TOKEN}`)
       .expect(201);
-    const note = await Note.findById(res.body.note._id);
-    expect(note).not.toBeNull();
+    const singleNote = await Note.findById(res.body.note._id);
+    expect(singleNote).not.toBeNull();
     done();
   });
 
@@ -141,6 +141,32 @@ describe('GET /api/note', () => {
 
   it('should not get notes if not authenticated', async (done) => {
     await request.get('/api/note')
+      .send()
+      .expect(403);
+    done();
+  });
+});
+
+describe('GET /api/note/:noteId', () => {
+  it('should get a single note', async (done) => {
+    const res = await request.get(`/api/note/${noteId}`)
+      .set('Authorization', `Bearer ${process.env.TEST_TOKEN}`)
+      .send()
+      .expect(200);
+    expect(res.body.note).toBeTruthy();
+    done();
+  });
+
+  it('should not find note', async (done) => {
+    await request.get('/api/note/123testId')
+      .set('Authorization', `Bearer ${process.env.TEST_TOKEN}`)
+      .send()
+      .expect(400);
+    done();
+  });
+
+  it('should not a single note if not authenticated', async (done) => {
+    await request.get(`/api/note/${noteId}`)
       .send()
       .expect(403);
     done();

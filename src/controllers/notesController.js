@@ -23,7 +23,17 @@ const Notes = {
     } catch (error) {
       next(createError(500));
     }
+  },
+  async getSingleNote(req, res, next) {
+    const { noteId } = req.params;
+    try {
+      const note = await Note.findById(noteId);
+      res.status(200).json({ note });
+    } catch (error) {
+      next(createError(400, 'note with given id was not found'));
+    }
   }
+
 };
 
 export default Notes;
