@@ -128,3 +128,21 @@ describe('POST /api/note', () => {
     done();
   });
 });
+
+describe('GET /api/note', () => {
+  it('get all notes', async (done) => {
+    const res = await request.get('/api/note')
+      .set('Authorization', `Bearer ${process.env.TEST_TOKEN}`)
+      .send()
+      .expect(200);
+    expect(res.body.notes).toBeTruthy();
+    done();
+  });
+
+  it('should not get notes if not authenticated', async (done) => {
+    await request.get('/api/note')
+      .send()
+      .expect(403);
+    done();
+  });
+});

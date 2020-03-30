@@ -14,6 +14,15 @@ const Notes = {
     } catch (error) {
       next(createError(400));
     }
+  },
+
+  async getNotes(req, res, next) {
+    try {
+      const notes = await Note.find({ createdBy: req.user.id });
+      res.status(200).json({ notes });
+    } catch (error) {
+      next(createError(500));
+    }
   }
 };
 
