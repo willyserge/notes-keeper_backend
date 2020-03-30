@@ -10,9 +10,9 @@ const Validate = {
       password: Joi.string().min(3).required()
 
     });
-    const result = schema.validate(req.body);
-    if (result.error) {
-      throw createError(400, result.error.details[0].message);
+    const { error } = schema.validate(req.body);
+    if (error) {
+      throw createError(400, error.details[0].message);
     }
 
     return next();
@@ -24,13 +24,29 @@ const Validate = {
       password: Joi.required()
 
     });
-    const result = schema.validate(req.body);
-    if (result.error) {
-      throw createError(400, result.error.details[0].message);
+    const { error } = schema.validate(req.body);
+    if (error) {
+      throw createError(400, error.details[0].message);
+    }
+
+    return next();
+  },
+
+  createNote: (req, res, next) => {
+    const schema = Joi.object({
+      title: Joi.string().required(),
+      category: Joi.string().valid('general', 'professional').required(),
+      description: Joi.string().min(8).required()
+
+    });
+    const { error } = schema.validate(req.body);
+    if (error) {
+      throw createError(400, error.details[0].message);
     }
 
     return next();
   }
+
 };
 
 export default Validate;

@@ -4,8 +4,8 @@ import supertest from 'supertest';
 import mongoose from 'mongoose';
 import app from '../app';
 import User from '../models/user';
+import Note from '../models/note';
 import { userOne, setupDatabase } from './dbOperations';
-
 
 const request = supertest(app);
 
@@ -82,6 +82,49 @@ describe('NON-EXISTING ENDPOINT', () => {
   it('should return 404 not found error', async (done) => {
     const res = await request.get('/notExist').expect(404);
     expect(res.body.error.message).toBe('Not Found');
+    done();
+  });
+});
+
+
+describe('POST /api/note', () => {
+  it('should create a new note', async (done) => {
+    const newNote = {
+      title: 'test title',
+      category: 'general',
+      description: 'test description'
+    };
+
+    const res = await request.post('/api/note')
+      .send(newNote).set('Authorization', `Bearer ${process.env.TEST_TOKEN}`)
+      .expect(201);
+    const note = await Note.findById(res.body.note._id);
+    expect(note).not.toBeNull();
+    done();
+  });
+
+  it('should not create a note with invalid data', async (done) => {
+    const newNote = {
+      title: '',
+      category: '',
+      description: ''
+    };
+    const res = await request.post('/api/note')
+      .send(newNote).set('Authorization', `Bearer ${process.env.TEST_TOKEN}`)
+      .expect(400);
+    expect(res.body.error.message).toBeTruthy();
+    done();
+  });
+
+  it('should not create a note if not authenticated', async (done) => {
+    const newNote = {
+      title: '',
+      category: '',
+      description: ''
+    };
+    await request.post('/api/note')
+      .send(newNote)
+      .expect(403);
     done();
   });
 });
