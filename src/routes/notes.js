@@ -7,4 +7,5 @@ notesRouter.post('/note', Validate.createNote, Notes.createNote);
 notesRouter.get('/note', Notes.getNotes);
 notesRouter.get('/note/:noteId', Notes.getSingleNote);
 notesRouter.put('/note/:noteId', Notes.updateNote);
+notesRouter.delete('/note/:noteId', Notes.deleteNote);
 export default notesRouter;

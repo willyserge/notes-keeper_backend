@@ -9,7 +9,6 @@ import { user, setupDatabase, noteId } from './dbOperations';
 
 const request = supertest(app);
 
-
 beforeAll(async () => {
   mongoose.connect(process.env.TEST_DB,
     {
@@ -188,11 +187,22 @@ describe('PUT /api/note', () => {
 
   it('should not update a note if not authenticated', async (done) => {
     const updatedNote = {
-      category: 'professional',
+      category: 'professional'
     };
     await request.put(`/api/note/${noteId}`)
       .send(updatedNote)
       .expect(403);
+    done();
+  });
+});
+
+describe('DELETE /api/note', () => {
+  it('should delete an existing note', async (done) => {
+    const res = await request.delete(`/api/note/${noteId}`)
+      .set('Authorization', `Bearer ${process.env.TEST_TOKEN}`)
+      .send()
+      .expect(200);
+    expect(res.body.message).toBe('note deleted successfully');
     done();
   });
 });

@@ -44,6 +44,16 @@ const Notes = {
     } catch (error) {
       next(createError(400, 'note with given id was not found'));
     }
+  },
+
+  async deleteNote(req, res, next) {
+    const { noteId } = req.params;
+    try {
+      await Note.findByIdAndRemove(noteId);
+      res.status(200).json({ message: 'note deleted successfully' });
+    } catch (error) {
+      next(createError(400, 'note with given id was not found'));
+    }
   }
 
 };
