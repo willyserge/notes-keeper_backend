@@ -32,6 +32,18 @@ const Notes = {
     } catch (error) {
       next(createError(400, 'note with given id was not found'));
     }
+  },
+  async updateNote(req, res, next) {
+    const { noteId } = req.params;
+    try {
+      const note = await Note.findByIdAndUpdate(noteId, req.body);
+      res.status(200).json({
+        message: 'note updated successfully',
+        note
+      });
+    } catch (error) {
+      next(createError(400, 'note with given id was not found'));
+    }
   }
 
 };

@@ -118,9 +118,9 @@ describe('POST /api/note', () => {
 
   it('should not create a note if not authenticated', async (done) => {
     const newNote = {
-      title: '',
-      category: '',
-      description: ''
+      title: 'test title',
+      category: 'professional',
+      description: 'test description'
     };
     await request.post('/api/note')
       .send(newNote)
@@ -168,6 +168,30 @@ describe('GET /api/note/:noteId', () => {
   it('should not a single note if not authenticated', async (done) => {
     await request.get(`/api/note/${noteId}`)
       .send()
+      .expect(403);
+    done();
+  });
+});
+
+describe('PUT /api/note', () => {
+  it('should update an existing note', async (done) => {
+    const updatedNote = {
+      title: 'updated  title'
+    };
+
+    await request.put(`/api/note/${noteId}`)
+      .send(updatedNote).set('Authorization', `Bearer ${process.env.TEST_TOKEN}`)
+      .expect(200);
+    done();
+  });
+
+
+  it('should not update a note if not authenticated', async (done) => {
+    const updatedNote = {
+      category: 'professional',
+    };
+    await request.put(`/api/note/${noteId}`)
+      .send(updatedNote)
       .expect(403);
     done();
   });
