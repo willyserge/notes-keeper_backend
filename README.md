@@ -9,8 +9,10 @@
 
 - [NodeJs](https://nodejs.org/) - Web Server.
 - [ExpressJs](https://expressjs.com/) - Server framework.
+- [MongoDb](https://www.mongodb.com/) - Database.
 - [Babel](https://babeljs.io/) - ES6 Javascript compiler.
 - [Eslint](https://eslint.org/) - Javascript code and syntax linter (Airbnb style guide was implemented on this project).
+
     
 
 ## Testing tools
