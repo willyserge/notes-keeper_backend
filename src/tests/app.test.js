@@ -206,3 +206,11 @@ describe('DELETE /api/note', () => {
     done();
   });
 });
+
+describe('GET / ', () => {
+  it('should welcome a user to the api', async (done) => {
+    const res = await request.get('/').expect(200);
+    expect(res.body.message).toBe('welcome to notes-keeper API');
+    done();
+  });
+});
