@@ -23,7 +23,7 @@
 
 ## Installation and usage
 
-1. Clone this repo with `git clone https://github.com/willyserge/notes-keeper_backend.git`,
+1. Clone this repo with `git clone https://github.com/willyserge/notes-keeper_backend.git`
 2. Run `npm install` to install dependencies.
 2. Run `npm run test` to test and check test coverage status .
 3. Run `npm run dev` to start the server
